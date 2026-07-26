@@ -11,10 +11,6 @@ app.use(express.static("public"));
 app.set("views", "./views");
 app.set("view engine", "ejs");
 
-//connection to Database
-const DatabaseUrl = "";
-mongoose.connect();
-
 //route
 app.get("/", (request, response) => {
   nexusModel
@@ -114,10 +110,14 @@ app.use((request, response) => {
   });
 });
 
+//connection to Database
+const DatabaseURI =
+  "mongodb+srv://whiteryan2599_db_user:r5yGCOpquNRHX9Ng@nexusdb.of8bxwv.mongodb.net/NexusDB";
+
 //setting up connection
 console.log();
 mongoose
-  .connect()
+  .connect(DatabaseURI)
   .then(() => {
     console.log("Successfully connected to MongoDB");
     const PORT = process.PORT || 3000;
