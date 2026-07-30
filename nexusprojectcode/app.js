@@ -120,7 +120,7 @@ mongoose
   .connect(DatabaseURI)
   .then(() => {
     console.log("Successfully connected to MongoDB");
-    const PORT = process.PORT || 3000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    const PORT = 3300;
+    app.listen(PORT, () => console.log(`Server running on port 3300 please run http://localhost:3300 in your browser`));
   })
   .catch((error) => console.log("MongoDB connection error: ", error));
