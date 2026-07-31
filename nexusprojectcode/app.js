@@ -2,13 +2,24 @@ const mongoose = require("mongoose");
 const express = require("express");
 const nexusModel = require("./models/nexusModel");
 const app = express();
+const session = require("express-session");
+const userModel = require("./models/userModel");
 
 //use json in browser
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+//User login session
+app.use(
+  session({
+    secret: "cambia-questa-chiave-segreta",
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
 //making folder public
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 //use view engine
-app.set("views", "./views");
+app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
 //route
@@ -19,7 +30,7 @@ app.get("/", (request, response) => {
       createdAt: -1,
     })
     .then((result) =>
-      response.render("Bookings", {
+      response.render("Booking", {
         title: "Bookings",
         nexusModel: result,
       }),
@@ -31,9 +42,64 @@ app.get("/", (request, response) => {
 });
 
 //login page
+//Login form
 app.get("/Login", (request, response) => {
-  response.render("Login", {
-    title: "Login",
+  response.render("Login", { title: "Login", error: null });
+});
+
+app.post("/Login", async (request, response) => {
+  const { email, password } = request.body;
+
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return response.render("Login", {
+        title: "Login",
+        error: "Utente non trovato",
+      });
+    }
+
+    if (user.password !== password) {
+      return response.render("Login", {
+        title: "Login",
+        error: "Password errata",
+      });
+    }
+
+    request.session.userId = user._id;
+    request.session.username = user.username;
+    response.redirect("/");
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Errore durante il login");
+  }
+});
+
+//Registrer form
+app.get("/Register", (request, response) => {
+  response.render("Register", { title: "Register", error: null });
+});
+
+app.post("/Register", async (request, response) => {
+  const { username, email, password } = request.body;
+
+  try {
+    const newUser = new userModel({ username, email, password });
+    await newUser.save();
+    response.redirect("/Login");
+  } catch (error) {
+    console.log(error);
+    response.render("Register", {
+      title: "Register",
+      error: "Email o username già in uso",
+    });
+  }
+});
+
+// logout
+app.get("/Logout", (request, response) => {
+  request.session.destroy(() => {
+    response.redirect("/Login");
   });
 });
 
@@ -121,6 +187,10 @@ mongoose
   .then(() => {
     console.log("Successfully connected to MongoDB");
     const PORT = 3300;
-    app.listen(PORT, () => console.log(`Server running on port 3300 please run http://localhost:3300 in your browser`));
+    app.listen(PORT, () =>
+      console.log(
+        `Server running on port 3300 please run http://localhost:3300 in your browser`,
+      ),
+    );
   })
   .catch((error) => console.log("MongoDB connection error: ", error));
