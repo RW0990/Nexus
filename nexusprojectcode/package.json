@@ -1,0 +1,29 @@
+{
+  "name": "s",
+  "version": "1.0.0",
+  "description": "Nexus is Web App for helping people managing their travel",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RW0990/Nexus.git"
+  },
+  "keywords": [],
+  "author": "Ryan White, Tara Johnson Slevin and Francesco La Pica",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/RW0990/Nexus/issues"
+  },
+  "homepage": "https://github.com/RW0990/Nexus#readme",
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.7.4"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"No tests yet\""
+  },
+  "start": "node app.js",
+  "test": "echo \"No tests yet\""
+}
