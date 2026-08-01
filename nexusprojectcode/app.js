@@ -59,7 +59,7 @@ app.post("/Login", async (request, response) => {
     if (!user) {
       return response.render("Login", {
         title: "Login",
-        error: "Utente non trovato",
+        error: "User not found",
       });
     }
 
@@ -75,7 +75,7 @@ app.post("/Login", async (request, response) => {
     response.redirect("/");
   } catch (error) {
     console.log(error);
-    response.status(500).send("Errore durante il login");
+    response.status(500).send("Error during the login");
   }
 });
 
@@ -95,7 +95,7 @@ app.post("/Register", async (request, response) => {
     console.log(error);
     response.render("Register", {
       title: "Register",
-      error: "Email o username già in uso",
+      error: "Email or username already in the system ",
     });
   }
 });
