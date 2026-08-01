@@ -9,7 +9,6 @@ const nexusAppSchema = new mongoose.Schema({
   seatNumber: { type: String, required: true },
   bags: { type: Number, required: true },
 });
-module.exports = mongoose.model("nexusApp", nexusAppSchema);
 
 const nexusHotelSchema = new mongoose.Schema({
   destination: { type: String, required: true },
@@ -20,7 +19,6 @@ const nexusHotelSchema = new mongoose.Schema({
   noOfGuests: { type: String, required: true },
   breakfastIncluded: { type: String, required: true },
 });
-module.exports = mongoose.model("nexusHotel", nexusHotelSchema);
 
 const nexusEventsSchema = new mongoose.Schema({
   destination: { type: String, required: true },
@@ -29,4 +27,9 @@ const nexusEventsSchema = new mongoose.Schema({
   noOfTickets: { type: String, required: true },
   VIP: { type: String, required: true },
 });
-module.exports = mongoose.model("nexusEvents", nexusEventsSchema);
+
+const nexusApp = mongoose.model("nexusApp", nexusAppSchema);
+const nexusHotel = mongoose.model("nexusHotel", nexusHotelSchema);
+const nexusEvents = mongoose.model("nexusEvents", nexusEventsSchema);
+
+module.exports = { nexusApp, nexusHotel, nexusEvents };

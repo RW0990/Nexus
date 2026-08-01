@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
-const nexusModel = require("./models/nexusModel");
+const { nexusApp, nexusHotel, nexusEvents } = require("./models/nexusModel");
 const app = express();
 const session = require("express-session");
 const userModel = require("./models/userModel");
@@ -27,22 +27,23 @@ app.use((request, response, next) => {
   next();
 });
 //route
-app.get("/", (request, response) => {
-  nexusModel
-    .find()
-    .sort({
-      createdAt: -1,
-    })
-    .then((result) =>
-      response.render("Booking", {
-        title: "Bookings",
-        nexusModel: result,
-      }),
-    )
-    .catch((error) => {
-      console.log(error);
-      response.status(500).send("Error loading bookings page");
+app.get("/", async (request, response) => {
+  try {
+    const flights = await nexusApp.find();
+    const hotels = await nexusHotel.find();
+
+    const bookings = [...flights, ...hotels].sort(
+      (a, b) => new Date(b.arrivalDate) - new Date(a.arrivalDate),
+    );
+
+    response.render("Booking", {
+      title: "Bookings",
+      bookings,
     });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading bookings page");
+  }
 });
 
 //login page
@@ -127,12 +128,62 @@ app.get("/Reminders", (request, response) => {
 });
 
 //Map page
-app.get("/Map", (request, response) => {
-  response.render("Map", {
-    title: "Map",
-  });
-});
 
+const geocodeCache = {};
+
+async function geocodeCity(cityName) {
+  if (geocodeCache[cityName]) return geocodeCache[cityName];
+
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}`;
+  const res = await fetch(url, {
+    headers: { "User-Agent": "NexusApp/1.0" },
+  });
+  const data = await res.json();
+
+  if (data.length === 0) return null;
+
+  const coords = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+  geocodeCache[cityName] = coords;
+  return coords;
+}
+
+app.get("/Map", async (request, response) => {
+  try {
+    const flights = await nexusApp.find();
+    const hotels = await nexusHotel.find();
+    const allBookings = [...flights, ...hotels];
+
+    const now = new Date();
+    const uniqueDestinations = new Map(); // destination -> { visited }
+
+    allBookings.forEach((booking) => {
+      const visited = new Date(booking.arrivalDate) < now;
+      const existing = uniqueDestinations.get(booking.destination);
+      // red if visited
+      if (!existing || (visited && !existing.visited)) {
+        uniqueDestinations.set(booking.destination, { visited });
+      }
+    });
+
+    const markers = [];
+    for (const [destination, info] of uniqueDestinations) {
+      const coords = await geocodeCity(destination);
+      if (coords) {
+        markers.push({
+          name: destination,
+          lat: coords.lat,
+          lng: coords.lng,
+          visited: info.visited,
+        });
+      }
+    }
+
+    response.render("Map", { title: "Map", markers });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading map page");
+  }
+});
 //Flights page
 app.get("/Flights", (request, response) => {
   response.render("Flights", {
@@ -157,14 +208,8 @@ app.get("/Accomodation", (request, response) => {
 //Recommendations page
 app.get("/Recommendations", async (request, response) => {
   try {
-    const events = await nexusModel.find().sort({
-      showDate: 1,
-    });
-
-    response.render("Recommendations", {
-      title: "Recommendations",
-      events,
-    });
+    const events = await nexusEvents.find();
+    response.render("Recommendations", { title: "Recommendations", events });
   } catch (error) {
     console.log(error);
     response.status(500).send("Error loading recommendations page");
