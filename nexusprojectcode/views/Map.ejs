@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Map</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  </head>
+
+  <body>
+    <%- include('partials/nav') %>
+
+    <h1>Travel History Map</h1>
+
+    <div id="map" style="height: 600px; width: 100%"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const markers = <%- JSON.stringify(markers) %>;
+
+      const map = L.map('map').setView([20, 0], 2);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(map);
+
+      markers.forEach((m) => {
+        const color = m.visited ? 'red' : 'blue';
+
+        const icon = L.divIcon({
+          className: '',
+          html: `<div style="background:${color}; width:14px; height:14px; border-radius:50%; border:2px solid white;"></div>`,
+          iconSize: [14, 14],
+        });
+
+        L.marker([m.lat, m.lng], { icon })
+          .addTo(map)
+          .bindPopup(`<b>${m.name}</b><br>${m.visited ? 'Visited' : 'Scheduled'}`);
+      });
+    </script>
+  </body>
+</html>

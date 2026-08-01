@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+  <body class="error-page">
+    <%- include('partials/nav') %>
+
+    <div class="error-content">
+      <h1><%= status %></h1>
+      <h2><%= heading %></h2>
+      <p><%= message %></p>
+      <a href="/">Home</a>
+    </div>
+  </body>
+</html>
