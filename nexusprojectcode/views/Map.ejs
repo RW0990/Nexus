@@ -22,7 +22,7 @@
     <script>
       const markers = <%- JSON.stringify(markers) %>;
 
-      const map = L.map('map').setView([20, 0], 2); // vista mondiale iniziale
+      const map = L.map('map').setView([20, 0], 2);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
@@ -39,7 +39,7 @@
 
         L.marker([m.lat, m.lng], { icon })
           .addTo(map)
-          .bindPopup(`<b>${m.name}</b><br>${m.visited ? 'Visitato' : 'In programma'}`);
+          .bindPopup(`<b>${m.name}</b><br>${m.visited ? 'Visited' : 'Scheduled'}`);
       });
     </script>
   </body>
