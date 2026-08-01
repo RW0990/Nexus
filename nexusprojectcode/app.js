@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 //User login session
 app.use(
   session({
-    secret: "cambia-questa-chiave-segreta",
+    secret: "secret",
     resave: false,
     saveUninitialized: false,
   }),
@@ -22,6 +22,10 @@ app.use(express.static(__dirname + "/public"));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
+app.use((request, response, next) => {
+  response.locals.username = request.session.username || null;
+  next();
+});
 //route
 app.get("/", (request, response) => {
   nexusModel

@@ -1,7 +1,6 @@
 <nav>
   <ul>
     <li><a href="/">Bookings</a></li>
-    <li><a href="/Login">Login</a></li>
     <li><a href="/User">User</a></li>
     <li><a href="/Trip">Trip</a></li>
     <li><a href="/Reminders">Reminders</a></li>
@@ -11,4 +10,14 @@
     <li><a href="/Accomodation">Accomodation</a></li>
     <li><a href="/Recommendations">Recommendations</a></li>
   </ul>
+
+  <div class="nav-user">
+    <% if (username) { %>
+      <span>Ciao, <%= username %></span>
+      <a href="/Logout">Logout</a>
+    <% } else { %>
+      <span>Guest</span>
+      <a href="/Login">Login</a>
+    <% } %>
+  </div>
 </nav>
