@@ -2,7 +2,7 @@
   "name": "nexus",
   "version": "1.0.0",
   "description": "Nexus is a WebApp that helps users save travel passes",
-  "main": "nexusprojectcode/app.js",
+  "main": "node app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node nexusprojectcode/app.js",
