@@ -5,32 +5,38 @@
     <title>Register</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
   </head>
 
   <body class="auth-page">
     <div class="auth-card">
+      <%- include('partials/nav') %>
       <h1>Create an Account</h1>
 
       <% if (error) { %>
-        <p class="auth-error"><%= error %></p>
+      <p class="auth-error"><%= error %></p>
       <% } %>
 
       <form action="/Register" method="POST" class="auth-form">
         <div class="input-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="email@email.com" required />
+          <input type="email" id="email" name="email"
+            placeholder="email@email.com" required />
         </div>
 
         <div class="input-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Must be 0-9 characters" required />
+          <input type="password" id="password" name="password"
+            placeholder="Must be 0-9 characters" required />
         </div>
 
         <div class="input-group">
-  <label for="username">Username</label>
-  <input type="text" id="username" name="username" placeholder="Username" required />
-</div>
-
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username"
+            placeholder="Username" required />
+        </div>
 
         <div class="auth-buttons">
           <button type="submit" class="btn-enter">Enter</button>
@@ -38,7 +44,8 @@
         </div>
       </form>
 
-      <p class="auth-switch">Already have an account? <a href="/Login">Sign in</a></p>
+      <p class="auth-switch">Already have an account? <a href="/Login">Sign
+          in</a></p>
     </div>
   </body>
 </html>

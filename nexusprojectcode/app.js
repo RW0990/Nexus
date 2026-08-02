@@ -114,6 +114,12 @@ app.get("/User", (request, response) => {
     title: "User",
   });
 });
+//new booking page
+app.get("/NewBooking", (request, response) => {
+  response.render("NewBooking.ejs", {
+    username: request.session?.username
+  });
+});
 //Trip page
 app.get("/Trip", (request, response) => {
   response.render("Trip", {

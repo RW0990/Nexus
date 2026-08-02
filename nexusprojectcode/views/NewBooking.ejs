@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>New Booking</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+
+    <body class="new-booking-page">
+
+        <%- include('partials/nav') %>
+
+        <main class="new-booking-container">
+
+            <h1>Create a New Booking</h1>
+
+            <form action="/NewBooking" method="POST" class="new-booking-form">
+
+                <label for="destination">Destination</label>
+                <input
+                    type="text"
+                    id="destination"
+                    name="destination"
+                    placeholder="Enter destination"
+                    required />
+
+                <label for="departureDate">Departure date</label>
+                <input
+                    type="date"
+                    id="departureDate"
+                    name="departureDate"
+                    required />
+
+                <label for="returnDate">Return date</label>
+                <input
+                    type="date"
+                    id="returnDate"
+                    name="returnDate"
+                    required />
+
+                <label for="hotel">Hotel</label>
+                <input
+                    type="text"
+                    id="hotel"
+                    name="hotel"
+                    placeholder="Enter hotel name" />
+
+                <label for="flightNumber">Flight number</label>
+                <input
+                    type="text"
+                    id="flightNumber"
+                    name="flightNumber"
+                    placeholder="Enter flight number" />
+
+                <label for="notes">Notes</label>
+                <textarea
+                    id="notes"
+                    name="notes"
+                    placeholder="Add any extra details"></textarea>
+
+                <button type="submit">Create Booking</button>
+
+            </form>
+
+        </main>
+
+    </body>
+</html>
