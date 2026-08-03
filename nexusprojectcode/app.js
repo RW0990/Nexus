@@ -150,9 +150,9 @@ app.post("/NewBooking", async (request, response) => {
   const { destination, departureDate, returnDate, hotel, flightNumber, notes } =
     request.body;
 
-    //create dates
-    const selectedDepartureDate = new Date(departureDate);
-    const selectedReturnDate = new Date(returnDate);
+  //create dates
+  const selectedDepartureDate = new Date(departureDate);
+  const selectedReturnDate = new Date(returnDate);
 
   //set todays date
   const today = new Date();
@@ -194,7 +194,6 @@ app.post("/NewBooking", async (request, response) => {
     await newBooking.save();
     console.log("Booking saved:", newBooking);
     response.redirect("/");
-    
   } catch (error) {
     console.log("Booking save error:", error);
 
@@ -239,18 +238,22 @@ async function geocodeCity(cityName) {
   geocodeCache[cityName] = coords;
   return coords;
 }
-
+//Map Page with destination
 app.get("/Map", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
   try {
-    const flights = await nexusApp.find();
-    const hotels = await nexusHotel.find();
-    const allBookings = [...flights, ...hotels];
+    const bookings = await bookingModel.find({
+      userId: request.session.userId,
+    });
 
     const now = new Date();
-    const uniqueDestinations = new Map(); // destination -> { visited }
+    const uniqueDestinations = new Map(); //add destination, if visited see next line
 
-    allBookings.forEach((booking) => {
-      const visited = new Date(booking.arrivalDate) < now;
+    bookings.forEach((booking) => {
+      const visited = new Date(booking.departureDate) < now;
       const existing = uniqueDestinations.get(booking.destination);
       // red if visited
       if (!existing || (visited && !existing.visited)) {
@@ -277,6 +280,7 @@ app.get("/Map", async (request, response) => {
     response.status(500).send("Error loading map page");
   }
 });
+
 //Flights page
 app.get("/Flights", (request, response) => {
   response.render("Flights", {
