@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const nexusAppSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   destination: { type: String, required: true },
   arrivalDate: { type: Date, required: true },
   departureDate: { type: Date, required: true },
@@ -12,7 +11,6 @@ const nexusAppSchema = new mongoose.Schema({
 });
 
 const nexusHotelSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   destination: { type: String, required: true },
   arrivalDate: { type: Date, required: true },
   departureDate: { type: Date, required: true },
