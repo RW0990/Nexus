@@ -1,3 +1,6 @@
+//use node clear.js to delete all database entries
+//i dont have access to database to do manually
+
 const mongoose = require("mongoose");
 const { nexusApp, nexusHotel, nexusEvents } = require("./models/nexusModel");
 const bookingModel = require("./models/bookingModel");
