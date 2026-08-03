@@ -15,26 +15,52 @@
     <%- include('partials/nav') %>
     <main class="booking-page">
       <h1 id="bookingtitle">Your next booking</h1>
-      <div class="new-booking" >
+      <div class="new-booking">
         <a href="/NewBooking">New Booking</a>
       </div>
       <br>
-      <section class="booking-card">
-        <div class="booking-row">
-          <div class="booking-icon">✈</div>
-          <div class="booking-info">
-            <span class="booking-label">Flight</span>
-            <p>Tokyo: 26th June</p>
+        <% if (!bookings || bookings.length === 0) { %>
+
+        <p class="no-bookings">You have no bookings yet.</p>
+
+        <% } else { %>
+        <% bookings.forEach(booking => { %>
+        <section class="booking-card">
+          <h2><%= booking.destination %></h2>
+          <div class="booking-row">
+            <div class="booking-icon">✈</div>
+            <div class="booking-info">
+              <span class="booking-label">Flight</span>
+              <p>
+                Destination:
+                <strong><%= booking.destination %></strong>
+              </p>
+              <p>
+                Flight Number: 
+                <strong><%= booking.flightNumber || "Not entered" %></strong>
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="booking-row">
-          <div class="booking-icon">🏨</div>
-          <div class="booking-info">
-            <span class="booking-label">Hotel</span>
-            <p>Hotel Casa Sagnier: 26th-28th June</p>
+          <div class="booking-row">
+            <div class="booking-icon">🏨</div>
+            <div class="booking-info">
+              <span class="booking-label">Hotel</span>
+              <p>
+                Hotel Name: 
+                <strong><%= booking.hotel || "No hotel entered" %></strong>
+              </p>
+              <p>
+                Date and Duration: 
+                <strong><%= booking.departureDate?.toDateString() || "No departure date"
+                %>
+                →
+                <%= booking.returnDate?.toDateString() || "No return date" %></strong>
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+        </section>
+        <% }) %>
+        <% } %>
+      </main>
+    </body>
+  </html>

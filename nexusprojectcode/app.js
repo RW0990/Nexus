@@ -4,6 +4,7 @@ const { nexusApp, nexusHotel, nexusEvents } = require("./models/nexusModel");
 const app = express();
 const session = require("express-session");
 const userModel = require("./models/userModel");
+const bookingModel = require("./models/bookingModel");
 
 //use json in browser
 app.use(express.json());
@@ -28,21 +29,30 @@ app.use((request, response, next) => {
 });
 //route
 app.get("/", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
   try {
-    const flights = await nexusApp.find();
-    const hotels = await nexusHotel.find();
-
-    const bookings = [...flights, ...hotels].sort(
-      (a, b) => new Date(b.arrivalDate) - new Date(a.arrivalDate),
-    );
+    //const flights = await nexusApp.find();
+    //const hotels = await nexusHotel.find();
+    const bookings = await bookingModel
+      .find({
+        userId: request.session.userId,
+      })
+      //newest booking first
+      .sort({
+        departureDate: 1,
+      });
+    console.log("Bookings found:", bookings);
 
     response.render("Booking", {
       title: "Bookings",
-      bookings,
+      username: request.session.username,
+      bookings: bookings,
     });
   } catch (error) {
     console.log(error);
-    response.status(500).send("Error loading bookings page");
+    response.status(500).send("Error loading bookings");
   }
 });
 
@@ -116,10 +126,87 @@ app.get("/User", (request, response) => {
 });
 //new booking page
 app.get("/NewBooking", (request, response) => {
-  response.render("NewBooking.ejs", {
-    username: request.session?.username
+  //make user log in before saving booking
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+  //set todays date so user cannot log passed dates as new booking
+  //also convert date to YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
+
+  response.render("NewBooking", {
+    title: "New Booking",
+    username: request.session.username,
+    error: null,
+    today: today,
   });
 });
+
+//accept and save new booking
+app.post("/NewBooking", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+  const { destination, departureDate, returnDate, hotel, flightNumber, notes } =
+    request.body;
+
+    //create dates
+    const selectedDepartureDate = new Date(departureDate);
+    const selectedReturnDate = new Date(returnDate);
+
+  //set todays date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  //check departure datre isnt in the past
+  if (selectedDepartureDate < today) {
+    return response.render("NewBooking", {
+      title: "New Booking",
+      username: request.session.username,
+      error: "Departure date cannot be in the past.",
+      today: today.toISOString().split("T")[0],
+    });
+  }
+
+  //check return date isnt before departure date
+  if (selectedReturnDate < selectedDepartureDate) {
+    return response.render("NewBooking", {
+      title: "New Booking",
+      username: request.session.username,
+      error: "Return date cannot be before the departure date.",
+      today: today.toISOString().split("T")[0],
+    });
+  }
+
+  //try create new booking
+  try {
+    const newBooking = new bookingModel({
+      userId: request.session.userId,
+      destination,
+      departureDate,
+      returnDate,
+      hotel,
+      flightNumber,
+      notes,
+    });
+
+    //save booking
+    await newBooking.save();
+    console.log("Booking saved:", newBooking);
+    response.redirect("/");
+    
+  } catch (error) {
+    console.log("Booking save error:", error);
+
+    response.render("NewBooking", {
+      title: "New Booking",
+      username: request.session.username,
+      error: "The booking could not be created",
+      today: today.toISOString().split("T")[0],
+    });
+  }
+});
+
 //Trip page
 app.get("/Trip", (request, response) => {
   response.render("Trip", {

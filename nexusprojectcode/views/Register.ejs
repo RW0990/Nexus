@@ -11,8 +11,9 @@
   </head>
 
   <body class="auth-page">
+    <%- include('partials/nav') %>
     <div class="auth-card">
-      <%- include('partials/nav') %>
+      
       <h1>Create an Account</h1>
 
       <% if (error) { %>
@@ -44,7 +45,7 @@
         </div>
       </form>
 
-      <p class="auth-switch">Already have an account? <a href="/Login">Sign
+      <p>Already have an account? <a href="/Login">Sign
           in</a></p>
     </div>
   </body>

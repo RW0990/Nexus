@@ -17,6 +17,10 @@
 
             <form action="/NewBooking" method="POST" class="new-booking-form">
 
+                <% if (error) { %>
+                <p class="auth-error"><%= error %></p>
+                <% } %>
+
                 <label for="destination">Destination</label>
                 <input
                     type="text"
@@ -30,6 +34,7 @@
                     type="date"
                     id="departureDate"
                     name="departureDate"
+                    min="<%= today %>"
                     required />
 
                 <label for="returnDate">Return date</label>
