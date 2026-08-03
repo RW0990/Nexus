@@ -150,9 +150,9 @@ app.post("/NewBooking", async (request, response) => {
   const { destination, departureDate, returnDate, hotel, flightNumber, notes } =
     request.body;
 
-    //create dates
-    const selectedDepartureDate = new Date(departureDate);
-    const selectedReturnDate = new Date(returnDate);
+  //create dates
+  const selectedDepartureDate = new Date(departureDate);
+  const selectedReturnDate = new Date(returnDate);
 
   //set todays date
   const today = new Date();
@@ -194,7 +194,6 @@ app.post("/NewBooking", async (request, response) => {
     await newBooking.save();
     console.log("Booking saved:", newBooking);
     response.redirect("/");
-    
   } catch (error) {
     console.log("Booking save error:", error);
 
@@ -241,26 +240,33 @@ async function geocodeCity(cityName) {
 }
 
 app.get("/Map", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
   try {
-    const flights = await nexusApp.find();
-    const hotels = await nexusHotel.find();
-    const allBookings = [...flights, ...hotels];
+    const bookings = await bookingModel.find({
+      userId: request.session.userId,
+    });
+    console.log("DEBUG - bookings found:", bookings.length, bookings); // <-- aggiungi
 
     const now = new Date();
-    const uniqueDestinations = new Map(); // destination -> { visited }
+    const uniqueDestinations = new Map();
 
-    allBookings.forEach((booking) => {
-      const visited = new Date(booking.arrivalDate) < now;
+    bookings.forEach((booking) => {
+      const visited = new Date(booking.departureDate) < now;
       const existing = uniqueDestinations.get(booking.destination);
-      // red if visited
       if (!existing || (visited && !existing.visited)) {
         uniqueDestinations.set(booking.destination, { visited });
       }
     });
 
+    console.log("unique destinations:", uniqueDestinations); // debug console log
+
     const markers = [];
     for (const [destination, info] of uniqueDestinations) {
       const coords = await geocodeCity(destination);
+      console.log("geocoding", destination, "->", coords); // debug console log
       if (coords) {
         markers.push({
           name: destination,
@@ -270,6 +276,8 @@ app.get("/Map", async (request, response) => {
         });
       }
     }
+
+    console.log("final markers:", markers); //Debug console log
 
     response.render("Map", { title: "Map", markers });
   } catch (error) {
