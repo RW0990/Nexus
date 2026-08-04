@@ -22,7 +22,23 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    hotelAddress: {
+      type: String,
+      default: "",
+    },
+    hotelBookingReference: {
+      type: String,
+      default: "",
+    },
     flightNumber: {
+      type: String,
+      default: "",
+    },
+    airline: {
+      type: String,
+      default: "",
+    },
+    flightReferenceNumber: {
       type: String,
       default: "",
     },

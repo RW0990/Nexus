@@ -6,21 +6,68 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap"
+      rel="stylesheet">
   </head>
 
   <body class="Flights">
 
     <%- include('partials/nav') %>
 
+    <main class="flight-page">
     <h1 id="bookingtitle">Flights</h1>
+    <% if (!bookings || bookings.length === 0) { %>
 
+    <p class="no-bookings">You have no bookings yet.</p>
 
+    <% } else { %>
 
-    </div>
+    <% bookings.forEach(booking => { %>
 
-  
+    <section class="flight-card">
+      <div class="flight-row">
+        <div class="booking-icon">✈</div>
+
+        <div class="flight-details-cards">
+          <p>
+            Destination:
+            <strong>
+              <%= booking.destination || "Not entered" %>
+            </strong>
+          </p>
+        </div>
+        <div class="flight-details-cards">
+          <p>
+            Airline:
+            <strong>
+              <%= booking.airline || "Not entered" %>
+            </strong>
+          </p>
+        </div>
+        <div class="flight-details-cards">
+          <p>
+            Flight Number:
+            <strong>
+              <%= booking.flightNumber || "Not entered" %>
+            </strong>
+          </p>
+        </div>
+        <div class="flight-details-cards">
+          <p>
+            Flight Reference Number:
+            <strong>
+              <%= booking.flightReferenceNumber || "Not entered" %>
+            </strong>
+          </p>
+        </div>
+      </section>
+
+      <% }) %>
+
+      <% } %>
+    </main>
 
   </body>
 </html>

@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
- 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap"
+      rel="stylesheet">
+
   </head>
 
   <body class="Accomodation">
@@ -16,12 +18,39 @@
     <%- include('partials/nav') %>
 
     <h1 id="bookingtitle">Accomodation Booked</h1>
+    <main class="accommodation-page">
+      <% if (!bookings || bookings.length === 0) { %>
 
+      <p class="no-bookings">You have no accommodation bookings yet.</p>
 
+      <% } else { %>
 
-    </div>
+      <% bookings.forEach(booking => { %>
+      <section class="accommodation-card">
 
-  
+        <div class="details-cards">
+          Destination:
+          <strong><%= booking.destination || "Not entered" %></strong>
+        </div>
 
+        <div class="details-cards">
+          Hotel Name:
+          <strong><%= booking.hotel || "Not entered" %></strong>
+        </div>
+
+        <div class="details-cards">
+          Hotel Address:
+          <strong><%= booking.hotelAddress || "Not entered" %></strong>
+        </div>
+
+        <div class="details-cards">
+          Hotel Booking Reference:
+          <strong><%= booking.hotelBookingReference || "Not entered" %></strong>
+        </div>
+
+      </section>
+      <% }) %>
+      <% } %>
+    </main>
   </body>
 </html>

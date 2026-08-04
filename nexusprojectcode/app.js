@@ -6,6 +6,7 @@ const session = require("express-session");
 const userModel = require("./models/userModel");
 const bookingModel = require("./models/bookingModel");
 
+
 //use json in browser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,6 +56,35 @@ app.get("/", async (request, response) => {
     response.status(500).send("Error loading bookings");
   }
 });
+// delete bnooking button
+app.post("/DeleteBooking/:id", async (request, response) => {
+  //check the user is logged in
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    //delete only the logged-in user's booking
+    const deletedBooking = await bookingModel.findOneAndDelete({
+      //requst
+      _id: request.params.id,
+      userId: request.session.userId,
+    });
+
+    //booking not found
+    if (!deletedBooking) {
+      return response.status(404).send("Booking not found.");
+    }
+
+    console.log("Booking deleted:", deletedBooking);
+
+    //return to bookings page
+    response.redirect("/");
+  } catch (error) {
+    console.log("Delete booking error:", error);
+    response.status(500).send("Unable to delete booking.");
+  }
+});
 
 //login page
 //Login form
@@ -77,7 +107,7 @@ app.post("/Login", async (request, response) => {
     if (user.password !== password) {
       return response.render("Login", {
         title: "Login",
-        error: "Password errata",
+        error: "Incorrect password",
       });
     }
 
@@ -147,7 +177,7 @@ app.post("/NewBooking", async (request, response) => {
   if (!request.session.userId) {
     return response.redirect("/Login");
   }
-  const { destination, departureDate, returnDate, hotel, flightNumber, notes } =
+  const { destination, departureDate, returnDate, hotel, hotelAddress, hotelBookingReference, flightNumber, airline, flightReferenceNumber, notes } =
     request.body;
 
   //create dates
@@ -186,7 +216,11 @@ app.post("/NewBooking", async (request, response) => {
       departureDate,
       returnDate,
       hotel,
+      hotelAddress,
+      hotelBookingReference,
       flightNumber,
+      airline,
+      flightReferenceNumber,
       notes,
     });
 
@@ -286,10 +320,26 @@ app.get("/Map", async (request, response) => {
   }
 });
 //Flights page
-app.get("/Flights", (request, response) => {
-  response.render("Flights", {
-    title: "Flights",
-  });
+app.get("/Flights", async (request, response) => {
+  //get user id from session to find bookings for that user
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    
+    const bookings = await bookingModel
+      .find({ userId: request.session.userId })
+      .sort({ departureDate: 1 });
+
+    response.render("Flights", {
+      title: "Flights",
+      bookings: bookings
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading flights page");
+  }
 });
 
 //Events page
@@ -300,10 +350,26 @@ app.get("/Events", (request, response) => {
 });
 
 //Accomodation page
-app.get("/Accomodation", (request, response) => {
-  response.render("Accomodation", {
-    title: "Accomodation",
-  });
+app.get("/Accomodation", async (request, response) => {
+  //get user id from session to find bookings for that user
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+ //get bookings for that user and sort by departure date
+  try {
+    const bookings = await bookingModel
+      .find({ userId: request.session.userId })
+      .sort({ departureDate: 1 });
+    //render the accomodation page with the bookings
+    response.render("Accomodation", {
+      title: "Accomodation",
+      username: request.session.username,
+      bookings,
+    });
+  } catch (error) {
+    console.log("Could not load accommodation:", error);
+    response.status(500).send("Could not load accommodation");
+  }
 });
 
 //Recommendations page
