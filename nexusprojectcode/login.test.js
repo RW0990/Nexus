@@ -1,10 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-// arrange : start from very beggining. ie create account/login > go to bookings page >
-//age from dob
-//use timout for database calls
-//await
 
 const { screen } = require("@testing-library/dom");
 const fs = require("fs");
@@ -30,8 +26,6 @@ describe("login page", () => {
     document.close();
   });
   test("email input box", () => {
-    //debug
-    console.log(document.body.innerHTML);
     //aranging
     const input = document.getElementById("email-input");
     input.value = "anything";
@@ -40,7 +34,6 @@ describe("login page", () => {
     expect(input.value).toBe("anything");
   });
   test("password input box", () => {
-    console.log(document.body.innerHTML);
     const input = document.getElementById("password-input");
     input.value = "passw0rd";
 
@@ -88,7 +81,9 @@ describe("create booking", () => {
     document.write(html);
     document.close();
   });
+  //test entering booking details and clicking button
   test("booking details and creation", () => {
+    //simulate form entries
     const destination = document.getElementById("destination");
     destination.value = "dublin";
     expect(destination.value).toBe("dublin");
@@ -129,13 +124,21 @@ describe("create booking", () => {
     notes.value = "notes";
     expect(notes.value).toBe("notes");
 
-    //create the booking
+    //create the booking button
     const button = document.getElementById("create-booking-btn");
+    //find the form which has the button
+    const form = button.closest("form");
+
+    //listen for form submission
+    form.addEventListener("submit", (event) => {
+      //stop jsdom from really submitting the form
+      event.preventDefault();
+    })
+    //click button
     button.click();
 
-    //check the form action contains "/Login" (bookings page)
+    //check the form action contains "/NewBooking" (/NewBooking route creates and saves the booking model)
     //when email and pass are correct, it redirects to the correct page
-    const form = document.querySelector("form");
     expect(form.action).toContain("/NewBooking");
   });
 
