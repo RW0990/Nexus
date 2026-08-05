@@ -2,11 +2,10 @@
   "name": "nexus",
   "version": "1.0.0",
   "description": "Nexus is a WebApp that helps users save travel passes",
-  "main": "nexusprojectcode/app.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "styles": "style.css"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,5 +24,10 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "mongoose": "^9.9.0"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1"
   }
 }
