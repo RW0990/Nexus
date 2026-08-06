@@ -60,10 +60,24 @@
             </p>
           </div>
         </div>
+        <% if (booking.notes) { %>
+        <div class="booking-row">
+          <div class="booking-icon">📝</div>
+          <div class="booking-info">
+            <span class="booking-label">Notes</span>
+
+            <p>
+              <strong><%= booking.notes %></strong>
+            </p>
+          </div>
+        </div>
+        <% } %>
         <div class="booking-actions">
           <div class="booking-row">
-            <form action="/DeleteBooking/<%= booking._id %>" method="POST"  onsubmit="return confirm('Are you sure you want to delete this booking?');">
-              <button type="submit" class="delete-button">Delete Booking</button>
+            <form action="/DeleteBooking/<%= booking._id %>" method="POST"
+              onsubmit="return confirm('Are you sure you want to delete this booking?');">
+              <button type="submit" class="delete-button">Delete
+                Booking</button>
             </form>
             <a href="/Map" class="map-button">View on Map</a>
           </div>
