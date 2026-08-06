@@ -5,22 +5,68 @@
     <title>Events</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
   </head>
 
   <body class="Events">
-
     <%- include('partials/nav') %>
 
     <h1 id="bookingtitle">Events</h1>
 
+    <% if (error) { %>
+      <p class="form-error"><%= error %></p>
+    <% } %>
 
+    <form action="/Events" method="POST" class="event-form">
+      <div class="form-group">
+        <label for="destination">Destination</label>
+        <input type="text" id="destination" name="destination" placeholder="e.g. Rome" required />
+      </div>
 
+      <div class="form-group">
+        <label for="reservationNumber">Reservation Number</label>
+        <input type="text" id="reservationNumber" name="reservationNumber" placeholder="e.g. EVT-001" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="Describe the event or activity" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="noOfTickets">Number of Tickets</label>
+        <input type="number" id="noOfTickets" name="noOfTickets" min="1" required />
+      </div>
+
+      <div class="form-group">
+        <label for="VIP">VIP Event?</label>
+        <select id="VIP" name="VIP" required>
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit">Add Event</button>
+    </form>
+
+    <hr />
+
+    <h2>All Events</h2>
+
+    <div class="events-list">
+      <% if (events.length === 0) { %>
+        <p>No events yet. Add one above.</p>
+      <% } else { %>
+        <% events.forEach((event) => { %>
+          <div class="event-item">
+            <h3><%= event.destination %></h3>
+            <p><%= event.description %></p>
+            <p><strong>Tickets:</strong> <%= event.noOfTickets %></p>
+            <% if (event.VIP === "Yes") { %>
+              <span class="vip-badge">VIP</span>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
     </div>
-
-  
-
   </body>
 </html>

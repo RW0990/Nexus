@@ -286,17 +286,78 @@ app.get("/Map", async (request, response) => {
   }
 });
 //Flights page
-app.get("/Flights", (request, response) => {
-  response.render("Flights", {
-    title: "Flights",
-  });
+app.get("/Flights", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    const bookings = await bookingModel
+      .find({ userId: request.session.userId })
+      .sort({ departureDate: 1 });
+
+    response.render("Flights", {
+      title: "Flights",
+      bookings,
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading flights page");
+  }
 });
 
 //Events page
-app.get("/Events", (request, response) => {
-  response.render("Events", {
-    title: "Events",
-  });
+
+app.get("/Events", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    const events = await nexusEvents.find().sort({ destination: 1 });
+
+    response.render("Events", {
+      title: "Events",
+      events,
+      error: null,
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading events page");
+  }
+});
+
+// new event form
+app.post("/Events", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  const { destination, reservationNumber, description, noOfTickets, VIP } =
+    request.body;
+
+  try {
+    const newEvent = new nexusEvents({
+      destination,
+      reservationNumber,
+      description,
+      noOfTickets,
+      VIP,
+    });
+
+    await newEvent.save();
+    console.log("Event saved:", newEvent);
+    response.redirect("/Events");
+  } catch (error) {
+    console.log("Event save error:", error);
+
+    const events = await nexusEvents.find().sort({ destination: 1 });
+    response.render("Events", {
+      title: "Events",
+      events,
+      error: "The event could not be created",
+    });
+  }
 });
 
 //Accomodation page
@@ -308,9 +369,29 @@ app.get("/Accomodation", (request, response) => {
 
 //Recommendations page
 app.get("/Recommendations", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
   try {
-    const events = await nexusEvents.find();
-    response.render("Recommendations", { title: "Recommendations", events });
+    // get all destinations from user
+    const userBookings = await bookingModel.find({
+      userId: request.session.userId,
+    });
+    const userDestinations = [
+      ...new Set(userBookings.map((b) => b.destination)),
+    ];
+
+    // find with the same destination
+    const events = await nexusEvents.find({
+      destination: { $in: userDestinations },
+    });
+
+    response.render("Recommendations", {
+      title: "Recommendations",
+      events,
+      hasBookings: userDestinations.length > 0,
+    });
   } catch (error) {
     console.log(error);
     response.status(500).send("Error loading recommendations page");

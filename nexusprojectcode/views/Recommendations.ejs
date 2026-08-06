@@ -5,22 +5,30 @@
     <title>Recommendations</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
   </head>
 
-  <body class="Recommendations">
-
+  <body>
     <%- include('partials/nav') %>
 
-    <h1 id="bookingtitle">Recommendations</h1>
+    <h1>Recommendations</h1>
 
-
-
-    </div>
-
-  
-
+    <% if (!hasBookings) { %>
+      <p>You don't have any bookings yet. Add a trip to see personalized recommendations.</p>
+    <% } else if (events.length === 0) { %>
+      <p>No recommendations available for your booked destinations yet.</p>
+    <% } else { %>
+      <div class="recommendations-list">
+        <% events.forEach((event) => { %>
+          <div class="recommendation-item">
+            <h2><%= event.destination %></h2>
+            <p><%= event.description %></p>
+            <p><strong>Tickets available:</strong> <%= event.noOfTickets %></p>
+            <% if (event.VIP === "Yes") { %>
+              <span class="vip-badge">VIP</span>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
   </body>
 </html>

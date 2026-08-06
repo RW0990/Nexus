@@ -5,22 +5,35 @@
     <title>Flights</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body class="Flights">
-
     <%- include('partials/nav') %>
 
     <h1 id="bookingtitle">Flights</h1>
 
-
-
+    <div class="flights-list">
+      <% if (bookings.length === 0) { %>
+        <p>No flight bookings yet.</p>
+      <% } else { %>
+        <% bookings.forEach((booking) => { %>
+          <div class="flight-item">
+            <h2><%= booking.destination %></h2>
+            <p><strong>Flight number:</strong> <%= booking.flightNumber %></p>
+            <p><strong>Departure:</strong> <%= new Date(booking.departureDate).toLocaleDateString() %></p>
+            <p><strong>Return:</strong> <%= new Date(booking.returnDate).toLocaleDateString() %></p>
+            <% if (booking.notes) { %>
+              <p><strong>Notes:</strong> <%= booking.notes %></p>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
     </div>
-
-  
-
   </body>
 </html>
