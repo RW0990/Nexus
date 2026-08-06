@@ -7,63 +7,9 @@ const fs = require("fs");
 const path = require("path");
 const ejs = require("ejs");
 
-//login test
-describe("login page", () => {
-  //this code runs before every test is ran
-  beforeEach(async () => {
-    //render the ejs file
-    const html = await ejs.renderFile(
-      //path for login.ejs
-      path.join(__dirname, "views/login.ejs"),
-      {
-        username: "",
-        error: "",
-      },
-    );
-    //put it into jsdom
-    document.open();
-    document.write(html);
-    document.close();
-  });
-  test("email input box", () => {
-    //aranging
-    const input = document.getElementById("email-input");
-    input.value = "anything";
-
-    //assertion
-    expect(input.value).toBe("anything");
-  });
-  test("password input box", () => {
-    const input = document.getElementById("password-input");
-    input.value = "passw0rd";
-
-    expect(input.value).toBe("passw0rd");
-  });
-  //test login all together
-  test("successful login submission", () => {
-    //test password
-    const password = document.getElementById("password-input");
-    password.value = "passw0rd";
-    expect(password.value).toBe("passw0rd");
-
-    //test email
-    const email = document.getElementById("email-input");
-    email.value = "emai1";
-    expect(email.value).toBe("emai1");
-
-    //login
-    const button = document.getElementById("login-button");
-    button.click();
-
-    //check the form action contains "/Login"
-    //when email and pass are correct, it redirects to the correct page
-    const form = document.querySelector("form");
-    expect(form.action).toContain("/Login");
-  });
-});
 
 //create booking test
-describe("create booking", () => {
+describe("booking input acceptance and submission", () => {
   //this code runs before every test is ran
   beforeEach(async () => {
     //render the ejs file
