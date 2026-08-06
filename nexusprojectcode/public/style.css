@@ -43,20 +43,24 @@
   border-radius: 13px;
 }
 .nav-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  white-space: nowrap;
 }
 
+/* default body */
 body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   background: #d5c7ff;
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 75;
+  font-variation-settings: "wdth" 75;
 }
 
 
@@ -206,6 +210,50 @@ body {
   margin-bottom: 30px;
 }
 
+/* details for flights and accommodation on respective pages */
+.flight-details-cards {
+  background: #b5a2f0;
+  border: 2px solid #53457c;
+  border-radius: 18px;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin: 1px;
+}
+.flight-page {
+  width: 90%;
+  max-width: 1000px;
+  margin: 60px auto;
+}
+.accommodation-page {
+  width: 50%;
+  max-width: 1000px;
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.flight-card {
+  background: #c0aff3;
+  border: 2px solid #53457c;
+  border-radius: 18px;
+  padding: 15px;
+  margin-bottom: 25px;
+}
+.accommodation-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #c0aff3;
+  border: 2px solid #53457c;
+  border-radius: 18px;
+  padding: 15px;
+}
+.flight-row {
+  display: grid;
+  grid-template-columns: 60px repeat(4, 1fr);
+  align-items: stretch;
+  gap: 18px;
+}
 .booking-card H2{
   font-size: 35px;
 }
@@ -242,6 +290,34 @@ body {
   font-size: 20px;
 }
 
+/* delete, edit, map buttons divs */
+.booking-action {
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* actual buttons */
+.edit-button,
+.delete-button,
+.map-button {
+  background: #8670ca;
+  border: 2px solid #53457c;
+  border-radius: 15px;
+  color: black;
+  padding: 10px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.edit-button:hover,
+.delete-button:hover,
+.map-button:hover {
+  background: #bca6ff;
+}
+
+/* "flight" "hotel" labels */
 .booking-label {
   font-size: 15px;
   font-weight: bold;
@@ -266,7 +342,7 @@ body {
 .new-booking-page {
   margin: 0;
   background: #d5c7ff;
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .new-booking-container {

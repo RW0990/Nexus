@@ -16,7 +16,9 @@
   <body class="Flights">
     <%- include('partials/nav') %>
 
+    <main class="flight-page">
     <h1 id="bookingtitle">Flights</h1>
+    <% if (!bookings || bookings.length === 0) { %>
 
     <div class="flights-list">
       <% if (bookings.length === 0) { %>

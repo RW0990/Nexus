@@ -5,6 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>New Booking</title>
         <link rel="stylesheet" href="/style.css" />
+        <link rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap"
+            rel="stylesheet">
     </head>
 
     <body class="new-booking-page">
@@ -43,28 +50,52 @@
                     id="returnDate"
                     name="returnDate"
                     required />
-
+                <br>
                 <label for="hotel">Hotel</label>
                 <input
                     type="text"
                     id="hotel"
                     name="hotel"
                     placeholder="Enter hotel name" />
-
+                <label for="hotelAddress">Hotel Address</label>
+                <input
+                    type="text"
+                    id="hotelAddress"
+                    name="hotelAddress"
+                    placeholder="Enter hotel address" />
+                    <label for="hotelBookingReference">Hotel booking reference</label>
+                <input
+                    type="text"
+                    id="hotelBookingReference"
+                    name="hotelBookingReference"
+                    placeholder="Enter booking reference" />
+                <br>
                 <label for="flightNumber">Flight number</label>
                 <input
                     type="text"
                     id="flightNumber"
                     name="flightNumber"
                     placeholder="Enter flight number" />
-
+                <label for="airline">Airline</label>
+                <input
+                    type="text"
+                    id="airline"
+                    name="airline"
+                    placeholder="Enter airline name" />
+                    <label for="flightReferenceNumber">Flight reference number</label>
+                <input
+                    type="text"
+                    id="flightReferenceNumber"
+                    name="flightReferenceNumber"
+                    placeholder="Enter flight reference number" />
+                <br>
                 <label for="notes">Notes</label>
                 <textarea
                     id="notes"
                     name="notes"
                     placeholder="Add any extra details"></textarea>
 
-                <button type="submit">Create Booking</button>
+                <button type="submit" id="create-booking-btn">Create Booking</button>
 
             </form>
 
