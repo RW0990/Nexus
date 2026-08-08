@@ -148,10 +148,39 @@ app.get("/Logout", (request, response) => {
 });
 
 //User page
-app.get("/User", (request, response) => {
-  response.render("User", {
-    title: "User",
-  });
+app.get("/User", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    const now = new Date();
+
+    // next trip
+    const nextTrip = await bookingModel
+      .findOne({
+        userId: request.session.userId,
+        departureDate: { $gte: now },
+      })
+      .sort({ departureDate: 1 });
+
+    let daysUntilNextTrip = null;
+    if (nextTrip) {
+      daysUntilNextTrip = Math.ceil(
+        (new Date(nextTrip.departureDate) - now) / (1000 * 60 * 60 * 24),
+      );
+    }
+
+    response.render("User", {
+      title: "User",
+      username: request.session.username,
+      nextTrip,
+      daysUntilNextTrip,
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading user page");
+  }
 });
 //new booking page
 app.get("/NewBooking", (request, response) => {
@@ -250,16 +279,99 @@ app.post("/NewBooking", async (request, response) => {
 });
 
 //Trip page
-app.get("/Trip", (request, response) => {
-  response.render("Trip", {
-    title: "Trip",
-  });
+app.get("/Trip", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    const bookings = await bookingModel
+      .find({ userId: request.session.userId })
+      .sort({ departureDate: 1 });
+
+    // group bookings by destination
+    const tripsByDestination = {};
+
+    bookings.forEach((booking) => {
+      if (!tripsByDestination[booking.destination]) {
+        tripsByDestination[booking.destination] = [];
+      }
+      tripsByDestination[booking.destination].push(booking);
+    });
+
+    response.render("Trip", { title: "Trip", tripsByDestination });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading trip page");
+  }
 });
 //Reminders page
-app.get("/Reminders", (request, response) => {
-  response.render("Reminders", {
-    title: "Reminders",
-  });
+
+app.get("/Reminders", async (request, response) => {
+  if (!request.session.userId) {
+    return response.redirect("/Login");
+  }
+
+  try {
+    const bookings = await bookingModel
+      .find({ userId: request.session.userId })
+      .sort({ departureDate: 1 });
+
+    const now = new Date();
+    const reminders = [];
+
+    // how many days before
+    const REMINDER_WINDOW_DAYS = 14;
+
+    bookings.forEach((booking) => {
+      const departure = new Date(booking.departureDate);
+      const returnD = new Date(booking.returnDate);
+
+      const daysUntilDeparture = Math.ceil(
+        (departure - now) / (1000 * 60 * 60 * 24),
+      );
+      const daysUntilReturn = Math.ceil(
+        (returnD - now) / (1000 * 60 * 60 * 24),
+      );
+
+      // next departure
+      if (
+        daysUntilDeparture >= 0 &&
+        daysUntilDeparture <= REMINDER_WINDOW_DAYS
+      ) {
+        reminders.push({
+          destination: booking.destination,
+          type: "departure",
+          days: daysUntilDeparture,
+          message:
+            daysUntilDeparture === 0
+              ? `Your trip to ${booking.destination} departs today!`
+              : `Your trip to ${booking.destination} departs in ${daysUntilDeparture} day${daysUntilDeparture === 1 ? "" : "s"}.`,
+        });
+      }
+
+      // upcoming return
+      if (daysUntilReturn >= 0 && daysUntilReturn <= REMINDER_WINDOW_DAYS) {
+        reminders.push({
+          destination: booking.destination,
+          type: "return",
+          days: daysUntilReturn,
+          message:
+            daysUntilReturn === 0
+              ? `You return from ${booking.destination} today!`
+              : `You return from ${booking.destination} in ${daysUntilReturn} day${daysUntilReturn === 1 ? "" : "s"}.`,
+        });
+      }
+    });
+
+    // sort for the soonest
+    reminders.sort((a, b) => a.days - b.days);
+
+    response.render("Reminders", { title: "Reminders", reminders });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Error loading reminders page");
+  }
 });
 
 //Map page

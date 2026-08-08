@@ -5,22 +5,41 @@
     <title>Trip</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap" rel="stylesheet">
   </head>
 
-  <body class="Trip">
-
+  <body>
     <%- include('partials/nav') %>
 
-    <h1 id="bookingtitle">Trip</h1>
+    <h1>My Trips</h1>
 
+    <% const destinations = Object.keys(tripsByDestination); %>
 
+    <% if (destinations.length === 0) { %>
+      <p>No trips yet. Add a booking to get started.</p>
+    <% } else { %>
+      <% destinations.forEach((destination) => { %>
+        <div class="trip-category">
+          <h2><%= destination %></h2>
 
-    </div>
-
-  
-
+          <div class="trip-bookings">
+            <% tripsByDestination[destination].forEach((booking) => { %>
+              <div class="trip-booking-item">
+                <p><strong>Departure:</strong> <%= new Date(booking.departureDate).toLocaleDateString() %></p>
+                <p><strong>Return:</strong> <%= new Date(booking.returnDate).toLocaleDateString() %></p>
+                <% if (booking.flightNumber) { %>
+                  <p><strong>Flight:</strong> <%= booking.flightNumber %></p>
+                <% } %>
+                <% if (booking.hotel) { %>
+                  <p><strong>Hotel:</strong> <%= booking.hotel %></p>
+                <% } %>
+                <% if (booking.notes) { %>
+                  <p><strong>Notes:</strong> <%= booking.notes %></p>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
   </body>
 </html>

@@ -5,24 +5,23 @@
     <title>Reminders</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap"
-      rel="stylesheet">
   </head>
 
-  <body class="Reminders">
-
+  <body>
     <%- include('partials/nav') %>
 
-    <h1 id="bookingtitle">Reminders</h1>
+    <h1>Reminders</h1>
 
-
-
-    </div>
-
-  
-
+    <% if (reminders.length === 0) { %>
+      <p>No upcoming reminders. You're all set!</p>
+    <% } else { %>
+      <div class="reminders-list">
+        <% reminders.forEach((reminder) => { %>
+          <div class="reminder-item <%= reminder.type === 'departure' ? 'reminder-departure' : 'reminder-return' %>">
+            <p><%= reminder.message %></p>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
   </body>
 </html>

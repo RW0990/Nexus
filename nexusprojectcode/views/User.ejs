@@ -5,17 +5,45 @@
     <title>User</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wdth@75&display=swap"
-      rel="stylesheet"
-    />
   </head>
 
-  <body class="User">
+  <body>
     <%- include('partials/nav') %>
 
-    <h1 id="bookingtitle">User</h1>
+    <div class="welcome-section">
+      <h1>Welcome back, <%= username %>!</h1>
+
+      <% if (nextTrip) { %>
+        <div class="next-trip-card">
+          <h2>Your next trip</h2>
+          <p class="trip-destination"><%= nextTrip.destination %></p>
+
+          <p class="trip-countdown">
+            <% if (daysUntilNextTrip === 0) { %>
+              You leave today!
+            <% } else { %>
+              <%= daysUntilNextTrip %> day<%= daysUntilNextTrip === 1 ? '' : 's' %> to go
+            <% } %>
+          </p>
+
+          <div class="trip-details">
+            <p><strong>Departure:</strong> <%= new Date(nextTrip.departureDate).toLocaleDateString() %></p>
+            <p><strong>Return:</strong> <%= new Date(nextTrip.returnDate).toLocaleDateString() %></p>
+            <% if (nextTrip.flightNumber) { %>
+              <p><strong>Flight:</strong> <%= nextTrip.flightNumber %></p>
+            <% } %>
+            <% if (nextTrip.hotel) { %>
+              <p><strong>Hotel:</strong> <%= nextTrip.hotel %></p>
+            <% } %>
+            <% if (nextTrip.notes) { %>
+              <p><strong>Notes:</strong> <%= nextTrip.notes %></p>
+            <% } %>
+          </div>
+        </div>
+      <% } else { %>
+        <p class="no-trip-message">You have no upcoming trips. Time to plan one!</p>
+        <a href="/NewBooking" class="btn-submit">Book a trip</a>
+      <% } %>
+    </div>
   </body>
 </html>

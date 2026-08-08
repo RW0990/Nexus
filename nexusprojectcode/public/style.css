@@ -4,8 +4,7 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 75;
+  font-variation-settings: "wdth" 75;
 }
 
 /* nav bar */
@@ -63,7 +62,6 @@ body {
   font-variation-settings: "wdth" 75;
 }
 
-
 /* LOGIN & REGISTER PAGES */
 .auth-page {
   margin: 0;
@@ -73,8 +71,7 @@ body {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 75;
+  font-variation-settings: "wdth" 75;
 }
 
 .auth-card {
@@ -171,7 +168,6 @@ body {
   border: 2px solid #8670ca;
 }
 
-
 .btn-reset:hover {
   background: #f0f0f0;
 }
@@ -254,7 +250,7 @@ body {
   align-items: stretch;
   gap: 18px;
 }
-.booking-card H2{
+.booking-card H2 {
   font-size: 35px;
 }
 
@@ -324,7 +320,7 @@ body {
   color: #53457c;
 }
 /* make a new booking button on bookings page */
-.new-booking{
+.new-booking {
   background: #c0aff3;
   border: 2px solid #53457c;
   border-radius: 15px;
@@ -333,7 +329,7 @@ body {
   margin: 0 auto;
 }
 
-.new-booking:hover{
+.new-booking:hover {
   background-color: #8670ca;
   color: white;
 }
@@ -381,7 +377,6 @@ body {
 
 .new-booking-form textarea {
   min-height: 100px;
-
 }
 
 .new-booking-form button {
@@ -397,4 +392,115 @@ body {
 
 .new-booking-form button:hover {
   background: #bca6ff;
+}
+/* reminder css*/
+.reminders-list {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reminder-item {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.reminder-departure {
+  background: #fff3cd;
+  border-left: 4px solid #f0ad4e;
+}
+
+.reminder-return {
+  background: #d1ecf1;
+  border-left: 4px solid #0dcaf0;
+}
+
+/*Trip css*/
+.trip-category {
+  max-width: 600px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.trip-category h2 {
+  border-bottom: 2px solid #6366f1;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.trip-bookings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trip-booking-item {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: #fafafa;
+}
+
+.trip-booking-item p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/*user css*/
+
+.welcome-section {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+.welcome-section h1 {
+  margin-bottom: 24px;
+}
+
+.next-trip-card {
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 24px;
+  background: linear-gradient(135deg, #a78bfa, #6366f1);
+  color: white;
+}
+
+.next-trip-card h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin: 0 0 8px 0;
+}
+
+.trip-destination {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.trip-countdown {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.trip-details {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.trip-details p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.no-trip-message {
+  color: #666;
+  margin-bottom: 16px;
 }
