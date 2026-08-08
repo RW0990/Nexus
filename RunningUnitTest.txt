@@ -3,3 +3,7 @@ use these commands:
 npx jest --config jest.config.js
 npm install --save-dev jest jest-environment-jsdom @testing-library/dom
 npm test 
+
+White-box testing commands:
+npm run coverage:vitest
+npm run test:vitest
