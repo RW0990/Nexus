@@ -7,11 +7,13 @@
 #How to install Clone Repo in bash/terminal/command line: 
 git clone https://github.com/RW0990/Nexus
 
+cd nexusprojectcode
+
 Download any extra dependencies in bash/terminal/command line: 
 npm install
 
 Run in bash/terminal/command line:
-npm start or nodemon app.js
+npm start or node app.js or nodemon app.js
 
 Open using Express: http://localhost:3000
 
