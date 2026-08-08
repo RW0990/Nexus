@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "test:vitest": "vitest",
+    "coverage:vitest": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,10 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
+    "@vitest/coverage-v8": "^4.1.10",
     "jest": "^30.4.2",
-    "jest-environment-jsdom": "^30.4.1"
+    "jest-environment-jsdom": "^30.4.1",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.10"
   }
 }

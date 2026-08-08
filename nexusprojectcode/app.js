@@ -471,16 +471,18 @@ const DatabaseURI =
   "mongodb+srv://whiteryan2599_db_user:r5yGCOpquNRHX9Ng@nexusdb.of8bxwv.mongodb.net/NexusDB";
 
 //setting up connection
-console.log();
-mongoose
-  .connect(DatabaseURI)
-  .then(() => {
-    console.log("Successfully connected to MongoDB");
-    const PORT = 3300;
-    app.listen(PORT, () =>
-      console.log(
-        `Server running on port 3300 please run http://localhost:3300 in your browser`,
-      ),
-    );
-  })
-  .catch((error) => console.log("MongoDB connection error: ", error));
+module.exports = app;
+if (require.main === module) {
+  mongoose
+    .connect(DatabaseURI)
+    .then(() => {
+      console.log("Successfully connected to MongoDB");
+      const PORT = 3300;
+      app.listen(PORT, () =>
+        console.log(
+          `Server running on port 3300 please run http://localhost:3300 in your browser`,
+        ),
+      );
+    })
+    .catch((error) => console.log("MongoDB connection error: ", error));
+}
