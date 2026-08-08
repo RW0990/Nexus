@@ -292,6 +292,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: "Roboto", sans-serif;
 }
 
 /* actual buttons */
@@ -306,6 +307,7 @@ body {
   font-size: 15px;
   cursor: pointer;
   text-decoration: none;
+  font-family: "Roboto", sans-serif;
 }
 .edit-button:hover,
 .delete-button:hover,
@@ -418,6 +420,13 @@ body {
   background: #d1ecf1;
   border-left: 4px solid #0dcaf0;
 }
+.reminders-title {
+  text-align: center;
+}
+
+.no-reminders {
+  text-align: center;
+}
 
 /*Trip css*/
 .trip-category {
@@ -449,7 +458,13 @@ body {
   margin: 4px 0;
   font-size: 14px;
 }
-
+#trips-title {
+  text-align: center;
+  font-size: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: black;
+}
 /*user css*/
 
 .welcome-section {
@@ -503,4 +518,105 @@ body {
 .no-trip-message {
   color: #666;
   margin-bottom: 16px;
+}
+
+/* events page */
+.events-page {
+  width: 70%;
+  max-width: 500px;
+  margin: 60px auto;
+}
+
+.event-form {
+  background: #c0aff3;
+  border: 2px solid #53457c;
+  border-radius: 18px;
+  padding: 20px;
+  max-width: 600px;
+  margin-bottom: 30px;
+  margin: 0 auto 30px auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.event-form input,
+.event-form textarea,
+.event-form select {
+  width: 100%;
+  padding: 10px;
+  background: #d5c7ff;
+  border: 2px solid #53457c;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+.event-form textarea {
+  height: 80px;
+}
+
+.btn-submit {
+  background: #8670ca;
+  border: 2px solid #53457c;
+  border-radius: 13px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background: #bca6ff;
+}
+
+.events-list {
+  margin-top: 20px;
+}
+
+.events-heading {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: black;
+}
+.event-item {
+  background: #c0aff3;
+  border: 2px solid #53457c;
+  border-radius: 18px;
+  padding: 15px;
+  margin-bottom: 20px;
+  margin: 0 auto 30px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+.event-item h3 {
+  font-size: 28px;
+  margin-top: 0;
+}
+
+.event-item p {
+  margin: 8px 0;
+}
+
+.vip-badge {
+  background: #8670ca;
+  border: 2px solid #53457c;
+  border-radius: 10px;
+  padding: 5px 10px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+}
+
+/* RECOMMENDATIONS CSS */
+.no-booking-recommendations,
+.no-recommendations,
+.recommendations-title {
+  text-align: center;
 }

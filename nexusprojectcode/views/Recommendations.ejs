@@ -15,12 +15,12 @@
   <body>
     <%- include('partials/nav') %>
 
-    <h1>Recommendations</h1>
+    <h1 class="recommendations-title">Recommendations</h1>
 
     <% if (!hasBookings) { %>
-      <p>You don't have any bookings yet. Add a trip to see personalized recommendations.</p>
+      <p class="no-booking-recommendations">You don't have any bookings yet. Add a trip to see personalized recommendations.</p>
     <% } else if (events.length === 0) { %>
-      <p>No recommendations available for your booked destinations yet.</p>
+      <p class="no-recommendations">No recommendations available for your booked destinations yet.</p>
     <% } else { %>
       <div class="recommendations-list">
         <% events.forEach((event) => { %>
